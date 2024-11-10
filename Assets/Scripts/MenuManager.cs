@@ -5,11 +5,15 @@ using System.IO;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+
+
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
     public string playerName;
+    public int score;
     public InputField nameInputField;
+    public GameObject inputName;
 
     private void Awake()
     {
@@ -19,34 +23,46 @@ public class MenuManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-        // end of new code
-
-        Instance = this;
         DontDestroyOnLoad(gameObject);
-        LoadColor();
+        Instance = this;
     }
 
     private void Start()
     {
+
     }
 
-    [System.Serializable]
-    class SaveData
+    private void OnGUI()
     {
-        public string playerName;
+
+        GUI.Label(new Rect(10, 20, 300, 50), "Name: " + playerName);
+        GUI.Label(new Rect(10, 60, 300, 50), "Score: " + score);
     }
 
-    public void SaveColor()
+    public void StartNew()
     {
+        if (nameInputField.text != null)
+            MenuManager.Instance.playerName = nameInputField.text;
+        else if (playerName != null && nameInputField.text == null)
+            MenuManager.Instance.playerName = playerName;
+        MenuManager.Instance.score = 0;
+        SceneManager.LoadScene(1);
+    }
+
+    public void SaveName()
+    {
+
         SaveData data = new SaveData();
         data.playerName = playerName ;
+        data.score = score;
 
         string json = JsonUtility.ToJson(data);
 
         File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+        print("Data Saved");
     }
 
-    public void LoadColor()
+    public void LoadName()
     {
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
@@ -55,15 +71,18 @@ public class MenuManager : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
             playerName = data.playerName;
+            score = data.score;
         }
+        print("Data Loaded");
     }
 
-    public void StartNew()
-    {
-        SceneManager.LoadScene(1);
-        playerName = nameInputField.text;
-        SaveColor();
 
 
-    }
+
+}
+[System.Serializable]
+class SaveData
+{
+    public string playerName;
+    public int score;
 }

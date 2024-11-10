@@ -11,7 +11,8 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
-    public Text nameText;
+    public Button menuButton;
+ //   public Text nameText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -22,8 +23,7 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        nameText.text = "Name: " + MenuManager.Instance.playerName;
-
+    //    nameText.text = "Player Name: " + MenuManager.Instance.playerName;
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -62,6 +62,7 @@ public class MainManager : MonoBehaviour
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
+        MenuManager.Instance.score = m_Points;
     }
 
     void AddPoint(int point)
@@ -74,5 +75,8 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+        menuButton.gameObject.SetActive(true);
     }
+
+ 
 }
