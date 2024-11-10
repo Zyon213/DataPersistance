@@ -10,10 +10,10 @@ using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
-    public string playerName;
+ //   public string playerName;
     public int score;
-    public InputField nameInputField;
-    public GameObject inputName;
+//    public InputField nameInputField;
+
 
     private void Awake()
     {
@@ -35,16 +35,13 @@ public class MenuManager : MonoBehaviour
     private void OnGUI()
     {
 
-        GUI.Label(new Rect(10, 20, 300, 50), "Name: " + playerName);
+    //    GUI.Label(new Rect(10, 20, 300, 50), "Name: " + playerName);
         GUI.Label(new Rect(10, 60, 300, 50), "Score: " + score);
     }
 
     public void StartNew()
     {
-        if (nameInputField.text != null)
-            MenuManager.Instance.playerName = nameInputField.text;
-        else if (playerName != null && nameInputField.text == null)
-            MenuManager.Instance.playerName = playerName;
+
         MenuManager.Instance.score = 0;
         SceneManager.LoadScene(1);
     }
@@ -53,7 +50,7 @@ public class MenuManager : MonoBehaviour
     {
 
         SaveData data = new SaveData();
-        data.playerName = playerName ;
+     //   data.playerName = playerName ;
         data.score = score;
 
         string json = JsonUtility.ToJson(data);
@@ -70,7 +67,7 @@ public class MenuManager : MonoBehaviour
             string json = File.ReadAllText(path);
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-            playerName = data.playerName;
+         //   playerName = data.playerName;
             score = data.score;
         }
         print("Data Loaded");
